@@ -11,6 +11,8 @@ public class PlayerMovemtn : MonoBehaviour
     private CharacterController characterController;
     [SerializeField]
     private GameObject shootparticlEffect;
+    [SerializeField]
+    private GameObject hitMarkEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +28,12 @@ public class PlayerMovemtn : MonoBehaviour
         {
             //Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0));
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
             shootparticlEffect.gameObject.SetActive(true);
-            if (Physics.Raycast(ray,Mathf.Infinity))
+            if (Physics.Raycast(ray,out hit,Mathf.Infinity))
             {
                 Debug.Log("ray got hit");
+                Instantiate(hitMarkEffect, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
         else
