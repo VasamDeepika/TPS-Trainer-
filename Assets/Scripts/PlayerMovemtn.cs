@@ -18,6 +18,15 @@ public class PlayerMovemtn : MonoBehaviour
     void Update()
     {
         Movement();
+        //raycast from the center of Main Camera
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0));
+            if(Physics.Raycast(ray,Mathf.Infinity))
+            {
+                Debug.Log("ray got hit");
+            }
+        }
     }
 
     private void Movement()
