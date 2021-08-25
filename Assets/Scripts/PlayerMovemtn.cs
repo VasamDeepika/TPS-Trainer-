@@ -7,7 +7,10 @@ public class PlayerMovemtn : MonoBehaviour
     [SerializeField]
     public float playerMoveSpeed = 5.0f;
     private float gravity = 9.81f;
+
     private CharacterController characterController;
+    [SerializeField]
+    private GameObject shootparticlEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +22,19 @@ public class PlayerMovemtn : MonoBehaviour
     {
         Movement();
         //raycast from the center of Main Camera
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButton(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0));
-            if(Physics.Raycast(ray,Mathf.Infinity))
+            //Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0));
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            shootparticlEffect.gameObject.SetActive(true);
+            if (Physics.Raycast(ray,Mathf.Infinity))
             {
                 Debug.Log("ray got hit");
             }
+        }
+        else
+        {
+            shootparticlEffect.gameObject.SetActive(false);
         }
     }
 
