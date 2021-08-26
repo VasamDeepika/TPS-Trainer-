@@ -5,16 +5,27 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController character;
+    private AudioSource audioSource;
     [SerializeField]
     private float playerspeed = 5;
     private float gravity = 9.8f;
     [SerializeField]
     private GameObject muzzlePrfeab;
     [SerializeField]
-    private GameObject hitMarketPrefab;
-    private AudioSource audioSource;
-    [SerializeField]
     private AudioClip[] audioClip;
+    [SerializeField] float fireRate = 1f;
+    [SerializeField] float timer;
+    [SerializeField]
+    private GameObject hitMarketPrefab;
+    public static PlayerMovement instance;
+
+    public int bulletCount = 50;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,29 +38,50 @@ public class PlayerMovement : MonoBehaviour
     {
         Movement();
         //raycast from the centre of main camera
-        if (Input.GetMouseButton(0))
+        timer += Time.deltaTime;
+        if (timer > fireRate)
         {
-            muzzlePrfeab.SetActive(true);
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(0.5f, 0.5f, 0));
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Input.GetMouseButton(0))
             {
-                Debug.Log("raycast got hit" + hit.transform.name);
-                GameObject temp = (GameObject)Instantiate(hitMarketPrefab, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(temp, 2.0f);
-                audioSource.clip = audioClip[1];
+                timer = 0f;
+                if (bulletCount > 0)
+                {
+                    ShootGun();
+                }
+                else
+                {
+                    print("Not enough bullets");
+                }
+            }
+            else
+            {
+                muzzlePrfeab.SetActive(false);
+                audioSource.clip = audioClip[0];
                 audioSource.Play();
                 audioSource.loop = false;
             }
         }
-        else
-        {
-            muzzlePrfeab.SetActive(false);
-            audioSource.clip = audioClip[0];
+
+    }
+
+    public void ShootGun()
+    {
+            bulletCount--;
+            muzzlePrfeab.SetActive(true);
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+            Debug.Log("raycast got hit" + hit.transform.name);
+            ParticlePool.instance.AddParticleEffect(hitMarketPrefab);
+            ParticlePool.instance.Spawning(hit);
+            //GameObject temp1 = (GameObject)Instantiate(hitMarketPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+            //Destroy(temp1, 2.0f);
+
+            audioSource.clip = audioClip[1];
             audioSource.Play();
             audioSource.loop = false;
         }
-
     }
     private void Movement()
     {

@@ -5,12 +5,6 @@ using UnityEngine;
 public class PlayerLookDirection : MonoBehaviour
 {
     private float rotateSpeed = 1.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
