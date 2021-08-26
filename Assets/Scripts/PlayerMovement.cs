@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float timer;
     [SerializeField]
     private GameObject hitMarketPrefab;
+    [SerializeField]
+    private GameObject shootPrefab;
     public static PlayerMovement instance;
 
     public int bulletCount = 50;
@@ -29,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GameObject.Find("AudioManager").GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         character = GetComponent<CharacterController>();
     }
 
@@ -66,12 +68,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void ShootGun()
     {
-            bulletCount--;
-            muzzlePrfeab.SetActive(true);
-            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
+        bulletCount--;
+        muzzlePrfeab.SetActive(true);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+        ShootPool.instance.AddParticleEffect(shootPrefab);
+        ShootPool.instance.Spawning();
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
             Debug.Log("raycast got hit" + hit.transform.name);
             ParticlePool.instance.AddParticleEffect(hitMarketPrefab);
             ParticlePool.instance.Spawning(hit);
