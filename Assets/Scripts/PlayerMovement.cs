@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private AudioClip[] audioClip;
     [SerializeField] float fireRate = 1f;
-    [SerializeField] float timer;
+    [SerializeField] float timer = 1.0f;
     [SerializeField]
     private GameObject hitMarketPrefab;
     [SerializeField]
@@ -49,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
                 if (bulletCount > 0)
                 {
                     ShootGun();
+                    audioSource.clip = audioClip[0];
+                    audioSource.Play();
+                    audioSource.loop = false;
                 }
                 else
                 {
@@ -58,9 +61,6 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 muzzlePrfeab.SetActive(false);
-                audioSource.clip = audioClip[0];
-                audioSource.Play();
-                audioSource.loop = false;
             }
         }
 
