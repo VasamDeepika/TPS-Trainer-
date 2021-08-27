@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private int maxAmmo = 50;
 
     private bool isReloading = false;
+    public bool hasCoin = false;
     private UIManager uiManager;
 
     private void Awake()
