@@ -21,7 +21,12 @@ public class PlayerMovement : MonoBehaviour
     private GameObject shootPrefab;
     public static PlayerMovement instance;
 
-    public int bulletCount = 50;
+    [SerializeField]
+    private int currentAmmo;
+    private int maxAmmo = 50;
+
+    private bool isReloading = false;
+    private UIManager uiManager;
 
     private void Awake()
     {
@@ -31,8 +36,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentAmmo = maxAmmo;
         audioSource = GetComponent<AudioSource>();
         character = GetComponent<CharacterController>();
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -46,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 timer = 0f;
-                if (bulletCount > 0)
+                if (currentAmmo > 0)
                 {
                     ShootGun();
                     audioSource.clip = audioClip[0];
@@ -61,15 +68,21 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 muzzlePrfeab.SetActive(false);
+
             }
         }
-
+        if(Input.GetKeyDown(KeyCode.R) && isReloading == false)
+        {
+            isReloading = true;
+            StartCoroutine(Reload());
+        }
     }
 
     public void ShootGun()
     {
-        bulletCount--;
         muzzlePrfeab.SetActive(true);
+        currentAmmo--;
+        uiManager.UpdateAmmo(currentAmmo);
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         ShootPool.instance.AddParticleEffect(shootPrefab);
@@ -94,5 +107,13 @@ public class PlayerMovement : MonoBehaviour
         velocity.y -= gravity;
         velocity = transform.transform.TransformDirection(velocity);
         character.Move(velocity * Time.deltaTime);
+    }
+    //reload bullts
+    IEnumerator Reload()
+    {
+        yield return new WaitForSeconds(1f);
+        currentAmmo = maxAmmo;
+        uiManager.UpdateAmmo(currentAmmo);
+        isReloading = false;
     }
 }
