@@ -101,6 +101,14 @@ public class PlayerMovement : MonoBehaviour
             audioSource.clip = audioClip[1];
             audioSource.Play();
             audioSource.loop = false;
+
+            //check if we hot crateand then destroy
+            Destructables crate = hit.transform.GetComponent<Destructables>();
+            if(crate!=null)
+            {
+                crate.OnCrateDestroy();
+            }
+
         }
     }
     private void Movement()
