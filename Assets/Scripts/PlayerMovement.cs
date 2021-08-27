@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private GameObject shootPrefab;
     public static PlayerMovement instance;
+    [SerializeField]
+    private GameObject weapon;
 
     [SerializeField]
     private int currentAmmo;
@@ -116,5 +118,10 @@ public class PlayerMovement : MonoBehaviour
         currentAmmo = maxAmmo;
         uiManager.UpdateAmmo(currentAmmo);
         isReloading = false;
+    }
+
+    public void EnableWeapon()
+    {
+        weapon.SetActive(true);
     }
 }

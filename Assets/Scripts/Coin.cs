@@ -16,7 +16,13 @@ public class Coin : MonoBehaviour
                 {
                     player.hasCoin = true;
                     Destroy(this.gameObject);
+                    UIManager uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+                    if(uiManager!=null)
+                    {
+                        uiManager.CollectedCoins();
+                    }
                     Debug.Log("Collected coin");
+                    //Destroy(this.gameObject);
                 }
             }
         }
