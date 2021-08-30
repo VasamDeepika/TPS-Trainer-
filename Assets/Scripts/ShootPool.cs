@@ -17,7 +17,7 @@ public class ShootPool : MonoBehaviour
 
     public void CreatePool()
     {
-        print("Pool created ");
+        //print("Pool created ");
         shootPool.Push(shootEffectPrefab);
         shootPool.Peek().SetActive(false);
         shootPool.Peek().tag = "ShootEffect";
@@ -25,14 +25,14 @@ public class ShootPool : MonoBehaviour
 
     public void AddParticleEffect(GameObject effectTemp)
     {
-        print("Added shoot effect to pool");
+        //print("Added shoot effect to pool");
         shootPool.Push(effectTemp);
         shootPool.Peek().SetActive(false);
     }
 
     public void Spawning()
     {
-        print("spawning shoot effect");
+        //print("spawning shoot effect");
         if (shootPool.Count <= 1)
         {
             CreatePool();

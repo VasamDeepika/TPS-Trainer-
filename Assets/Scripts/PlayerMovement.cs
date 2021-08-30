@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         ShootPool.instance.Spawning();
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            Debug.Log("raycast got hit" + hit.transform.name);
+            //Debug.Log("raycast got hit" + hit.transform.name);
             ParticlePool.instance.AddParticleEffect(hitMarketPrefab);
             ParticlePool.instance.Spawning(hit);
             //GameObject temp1 = (GameObject)Instantiate(hitMarketPrefab, hit.point, Quaternion.LookRotation(hit.normal));
@@ -102,11 +102,15 @@ public class PlayerMovement : MonoBehaviour
             audioSource.Play();
             audioSource.loop = false;
 
-            //check if we hot crateand then destroy
+            //check if we had crate and then destroy
             Destructables crate = hit.transform.GetComponent<Destructables>();
+            GunShop gunShop = GetComponent<GunShop>();
             if(crate!=null)
             {
-                crate.OnCrateDestroy();
+                if (gunShop.hasGun == true)
+                {
+                    crate.OnCrateDestroy();
+                }
             }
 
         }

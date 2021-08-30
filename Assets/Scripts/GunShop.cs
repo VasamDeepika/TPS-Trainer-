@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunShop : MonoBehaviour
 {
     //if collision is player and have coin inventory needs to be updated
-
+    public bool hasGun = false;
     private void OnTriggerStay(Collider other)
     {
         if(other.tag == "Player")
@@ -18,6 +18,7 @@ public class GunShop : MonoBehaviour
                 {
                     if(player.hasCoin==true)
                     {
+                        
                         Debug.Log("Collected Gun");
                         player.hasCoin = false;
                         UIManager uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
@@ -26,6 +27,8 @@ public class GunShop : MonoBehaviour
                             uiManager.RemovedCoin();
                         }
                         player.EnableWeapon();
+                        hasGun = true;
+                        print(hasGun);
                     }
                 }
             }

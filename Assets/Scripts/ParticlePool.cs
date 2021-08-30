@@ -16,20 +16,20 @@ public class ParticlePool : MonoBehaviour
 
     public void CreatePool()
     {
-        print("Pool created ");
+        //print("Pool created ");
         particleEffectPool.Push(effectPrefab);
         particleEffectPool.Peek().SetActive(false);
         particleEffectPool.Peek().tag = "ParticleEffect";
     }
     public void AddParticleEffect(GameObject effectTemp)
     {
-        print("Added to pool");
+        //print("Added to pool");
         particleEffectPool.Push(effectTemp);
         particleEffectPool.Peek().SetActive(false);
     }
     public void Spawning(RaycastHit hit)
     {
-        print("spwning effect");
+       // print("spwning effect");
         if (particleEffectPool.Count <= 1)
         {
             CreatePool();
